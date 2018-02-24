@@ -7,4 +7,6 @@
 # version: 1.0
 
 #!/bin/bash
-free $1; sync && sudo su -c "echo 2 > /proc/sys/vm/drop_caches" && echo && free $1
+function fram(){
+	free $1; sync && sudo su -c "echo 2 > /proc/sys/vm/drop_caches" && echo && free $1
+}
