@@ -27,4 +27,4 @@ cat ~/.ssh/$USER@$HOSTNAME.pub
 
 # Add key to the ssh-agent
 eval `ssh-agent -s`
-ssh-add ~/.ssh/id_rsa
+ssh-add ~/.ssh/$USER@$HOSTNAME
