@@ -123,3 +123,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+#PATH
+
+alias src="source ~/.bashrc"
+
+#ssh-add key
