@@ -1,9 +1,9 @@
-# This non-interactive script converts any supported currency to any other supported currency (-ies) using fixer.io API (therefore it need an Internet connection).
+# This non-interactive script converts any supported currency to any other supported currency (-ies) using frankfurter.app website (therefore it needs an Internet connection).
 
 # author: Tukusej's Sirs (based upon what I found on the Internet, http://fixer.io/ ... https://github.com/lecler-i/bash-currency-converter/blob/master/bcc.sh)
 # created: 25 Feb 2018
 # dependencies: awk bc case cut do done echo else esac return fi for if printf sed seq then tr wget
-# version: 1.1
+# version: 1.2 (Changed the website from fixer.io to frankfurter.app, as Fixer API updated and free "pricing" does not support change of the "base" currency)
 
 #!/bin/bash
 function cconv(){
@@ -51,8 +51,8 @@ function cconv(){
 
 	    return 1;
 	}
-
-	data=`wget -o /dev/null -O - "https://api.fixer.io/$date?base=$from&symbols=$to"`
+	
+	data=`wget -o /dev/null -O - "https://frankfurter.app/$date?base=$from&symbols=$to"`
 
 	case $data in
 		'')
@@ -75,7 +75,7 @@ function cconv(){
 	currency_num=`echo $(echo $to | awk -F, '{print NF-1}') + 1 | bc`  # The number of commas plus one
 	if [[ currency_num -eq 1 ]]; then  # Single target currency
 		rate=`echo $data | sed "s/.*rates\":[{]\"$to\":\([0-9.]*\).*/\1/g" -`
-		echo $to `echo $sum \* $rate | bc`
+		echo $to $(round 5 `echo $sum \* $rate | bc -lq`)
 	else  # Multiple target currency
 		for n in `seq 1 $currency_num`; do
 			to_split=$(echo $to | cut -f $n -d,)  # Splitting $to into $to_arr
@@ -86,10 +86,9 @@ function cconv(){
 				echo $to_split $sum
 			else
 				rate=`echo $data | sed "s/.*$to_split\":\([0-9.]*\).*/\1/" -`
-				echo $to_split `echo $sum \* $rate | bc`
+				echo $to_split $(round 5 `echo $sum \* $rate | bc -lq`)
 			fi
 		done
 	fi
-
 	return $return_code
 }

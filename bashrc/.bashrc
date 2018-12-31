@@ -101,15 +101,42 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
+if [ -s ~/.bash_aliases ]; then
+    test=`file ~/.bash_aliases -b`
+    grep=`echo $test | grep "^symbolic link" -o`
+    path=`echo $test | sed 's/^symbolic link to //' -`
+
+    if [[ $grep == "symbolic link" ]]; then
+        . $path
+    fi
+elif [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -d ~/.bash_functions ]; then
+if [ -s ~/.bash_functions ]; then
+    test=`file ~/.bash_functions -b`
+    grep=`echo $test | grep "^symbolic link" -o`
+    path=`echo $test | sed 's/^symbolic link to \(.*\)\/$/\1/' -`
+
+    if [[ $grep == "symbolic link" ]]; then
+        for n in `ls $path`; do
+            . $path/$n
+        done
+    fi
+elif [ -d ~/.bash_functions ]; then
     . ~/.bash_functions/*
+    echo ".bash_functions loaded"
 fi
 
-if [ -f ~/.bash_progs ]; then
+if [ -s ~/.bash_progs ]; then
+    test=`file ~/.bash_progs -b`
+    grep=`echo $test | grep "^symbolic link" -o`
+    path=`echo $test | sed 's/^symbolic link to //' -`
+
+    if [[ $grep == "symbolic link" ]]; then
+        . $path
+    fi
+elif [ -d ~/.bash_progs ]; then
     . ~/.bash_progs
 fi
 
