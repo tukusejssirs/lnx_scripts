@@ -94,13 +94,6 @@ if [ -n "$force_color_prompt" ]; then
 	fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
 # Add an "alert" alias for long running commands. Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -220,34 +213,38 @@ blmagenta="\e[105m"
 blcyan="\e[106m"
 bwhite="\e[107m"
 
+# prompt
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+	echo -e "${lred}@${fdefault}"
+else
+	echo "@"
+fi
+
+EXIT="$?"  # Return code
+
+if [ $EXIT == 0 ]; then  # $EXIT colour based upon its value
+	return="${lred}$retval${fdefault}"
+else
+	return="${lgreen}$retval${fdefault}"
+fi
+
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r $etc/debian_chroot ]; then
+	debian_chroot=$(cat $etc/debian_chroot)
+fi
+
+# PS1="${normal}[${purple}\\D{%-l:%M%P}${normal}]${return} ${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ "
+
+t_date=$(dateCmd +"%l.%m%P")
+
+# PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u` remote_host`\h: \[\e]0;\w\a\n\\$ "
+
+PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` \\u`remote_host`\\h: \\w\n\\$ "
+
 # Unset variables used by .bashrc
 unset usr
 unset etc
 unset bin
 unset var
 unset date
-
-# PS1
-function return_value(){
-	retval=$?
-	if [[ $retval -ne 0 ]]; then
-		echo -e "${lred}$retval${fdefault}"
-	else
-		echo -e "${lgreen}$retval${fdefault}"
-	fi
-}
-
-function remote_host(){
-	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-		echo -e "${lred}@${fdefault}"
-	else
-		echo "@"
-	fi
-}
-# Set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r $etc/debian_chroot ]; then
-	debian_chroot=$(cat $etc/debian_chroot)
-fi
-t_date=$(dateCmd +"%l.%m%P")
-
-PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u`remote_host`\h: \[\e]0;\w\a\n\\$ "
+unset t_date
