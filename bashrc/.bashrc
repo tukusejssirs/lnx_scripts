@@ -17,7 +17,7 @@
 # Check where we are running the shell (Android/Termux, Linux)
 # Then set some system-dependant variables
 if [[ `uname -o` == "Android" ]]; then
-	if [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/login" ]]; then
+	if [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/login" ]] || [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/bash" ]]; then
 		# We are in Android/Termux
 		usr="/data/data/com.termux/files/usr"
 		etc="/data/data/com.termux/files/usr/etc"
@@ -29,7 +29,7 @@ if [[ `uname -o` == "Android" ]]; then
 		# To make `su` work, add `/su/bin/` to $PATH
 		PATH=/su/bin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets
 	fi
-elif [[ `uname -o` == "GNU/Linux"  ]]; then
+elif [[ `uname -o` == "GNU/Linux" ]]; then
 	usr="/usr"
 	etc="/etc"
 	bin="/bin"
