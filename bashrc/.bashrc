@@ -1,11 +1,51 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# TODO
+# - git stuff update scripts [1]
+# - .bash_history (auto-update and git push to lnx_*)
+# - ls aliases
+# - git add + git commit + git push
+# - megasync
+# - check basic bash settings like shopt (etc)
+# - add path to PS1
+
+# [1]
+# # update local romcal git repo
+# p=$PWD
+# cd $HOME/.scripts/romcal
+# git fetch && git pull origin && git pull
+# cd $p
+
+# Check where we are running the shell (Android/Termux, Linux)
+# Then set some system-dependant variables
+if [[ `uname -o` == "Android" ]]; then
+	if [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/login" ]]; then
+		# We are in Android/Termux
+		usr="/data/data/com.termux/files/usr"
+		etc="/data/data/com.termux/files/usr/etc"
+		bin="/data/data/com.termux/files/usr/bin"
+		var="/data/data/com.termux/files/usr/var"
+		dev="/dev"
+		alias dateCmd=$(which date)
+
+		# To make `su` work, add `/su/bin/` to $PATH
+		PATH=/su/bin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets
+	fi
+elif [[ `uname -o` == "GNU/Linux"  ]]; then
+	usr="/usr"
+	etc="/etc"
+	bin="/bin"
+	var="/var"
+	dev="/dev"
+	alias dateCmd=$(which date)
+fi
+
+# $HOME/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+	*i*) ;;
+	*) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -16,143 +56,198 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Setting HISTSIZE to a value less than zero causes the history list to be unlimited (setting it 0 zero disables the history list).
+# Setting HISTFILESIZE to a value less than zero causes the history file size to be unlimited (setting it to 0 causes the history file to be truncated to zero size).
+HISTSIZE=-1
+HISTFILESIZE=-1
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+# If set, the pattern "**" used in a pathname expansion context will match all files and zero or more directories and subdirectories.
+shopt -s globstar
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x $usr/bin/lesspipe ] && eval "$(SHELL=$bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r $etc/debian_chroot ]; then
+	debian_chroot=$(cat $etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
+# # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+	xterm-color|*-256color) color_prompt=yes ;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+# Coloured GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	if [ -x $usr/bin/tput ] && tput setaf 1 >&$dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
 	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
 	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
-    else
+	else
 	color_prompt=
-    fi
+	fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
+# Add an "alert" alias for long running commands. Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+# $HOME/.bash_aliases, instead of adding them here directly.
+# See $usr/share/doc/bash-doc/examples in the bash-doc package.
+if [ -s $HOME/.bash_aliases ]; then
+	test=`file $HOME/.bash_aliases -b`
+	grep=`echo $test | grep "^symbolic link" -o`
+	path=`echo $test | sed 's/^symbolic link to //' -`
 
-if [ -s ~/.bash_aliases ]; then
-    test=`file ~/.bash_aliases -b`
-    grep=`echo $test | grep "^symbolic link" -o`
-    path=`echo $test | sed 's/^symbolic link to //' -`
-
-    if [[ $grep == "symbolic link" ]]; then
-        . $path
-    fi
-elif [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+	if [[ $grep == "symbolic link" ]]; then
+		. $path
+	fi
+elif [ -f $HOME/.bash_aliases ]; then
+	. $HOME/.bash_aliases
 fi
 
-if [ -s ~/.bash_functions ]; then
-    test=`file ~/.bash_functions -b`
-    grep=`echo $test | grep "^symbolic link" -o`
-    path=`echo $test | sed 's/^symbolic link to \(.*\)\/$/\1/' -`
+if [ -s $HOME/.bash_functions ]; then
+	test=`file $HOME/.bash_functions -b`
+	grep=`echo $test | grep "^symbolic link" -o`
+	path=`echo $test | sed 's/^symbolic link to \(.*\)\/$/\1/' -`
 
-    if [[ $grep == "symbolic link" ]]; then
-        for n in `ls $path`; do
-            . $path/$n
-        done
-    fi
-elif [ -d ~/.bash_functions ]; then
-    . ~/.bash_functions/*
-    echo ".bash_functions loaded"
+	if [[ $grep == "symbolic link" ]]; then
+		for n in `ls $path`; do
+			. $path/$n
+		done
+	fi
+elif [ -d $HOME/.bash_functions ]; then
+	. $HOME/.bash_functions/*
+	echo ".bash_functions loaded"
 fi
 
-if [ -s ~/.bash_progs ]; then
-    test=`file ~/.bash_progs -b`
-    grep=`echo $test | grep "^symbolic link" -o`
-    path=`echo $test | sed 's/^symbolic link to //' -`
+if [ -s $HOME/.bash_progs ]; then
+	test=`file $HOME/.bash_progs -b`
+	grep=`echo $test | grep "^symbolic link" -o`
+	path=`echo $test | sed 's/^symbolic link to //' -`
 
-    if [[ $grep == "symbolic link" ]]; then
-        . $path
-    fi
-elif [ -d ~/.bash_progs ]; then
-    . ~/.bash_progs
+	if [[ $grep == "symbolic link" ]]; then
+		. $path
+	fi
+elif [ -d $HOME/.bash_progs ]; then
+	. $HOME/.bash_progs
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# Enable programmable completion features
+# Note: You don't need to enable this, if it's already enabled in $etc/bash.bashrc and $etc/profile sources /etc/bash.bashrc.
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+  if [ -f $usr/share/bash-completion/bash_completion ]; then
+	. $usr/share/bash-completion/bash_completion
+  elif [ -f $etc/bash_completion ]; then
+	. $etc/bash_completion
   fi
 fi
 
-#PATH
+# Format definition
+# Note: not every terminal emulator supports all of them
+bold="\e[1m"  # This is either bold (if supported) or bright in colour
+dim="\e[2m"
+italics="\e[3m"
+underline="\e[4m"
+blink="\e[5m"
+overline="\e[6m"
+invert="\e[7m"  # Invert the foreground and background colours
+hide="\e[8m"  # Change foreground to background colour
+strike="\e[9m"  # Strikethrough
 
-alias src="source ~/.bashrc"
+# Format and colour reseting
+unbold="\e[21m"
+undim="\e[22m"
+unitalics="\e[23m"
+ununderline="\e[24m"
+unblink="\e[25m"
+unoverline="\e26m"
+uninvert="\e[27m"
+unhide="\e[28m"
+unstrike="\e[9m"
+normal="\e[0"  # Normal format (i.e reset all manually set format)
+fdefault="\e[39m"  # Default foreground colour
+bdefault="\e[49m"  # Default background colour
 
-#ssh-add key
+# Foreground colours (8/16)
+black="\e[30m"
+red="\e[31m"
+green="\e[32m"
+yellow="\e[33m"
+blue="\e[34m"
+magenta="\e[35m"
+cyan="\e[36m"
+lgrey="\e[37m"
+dgrey="\e[90m"
+lred="\e[91m"
+lgreen="\e[92m"
+lyellow="\e[93m"
+lblue="\e[94m"
+lmagenta="\e[95m"
+lcyan="\e[96m"
+white="\e[97m"
+
+# Background colours (8/16)
+bblack="\e[40m"
+bred="\e[41m"
+bgreen="\e[42m"
+byellow="\e[43m"
+bblue="\e[44m"
+bmagenta="\e[45m"
+bcyan="\e[46m"
+blgrey="\e[47m"
+bdgrey="\e[100m"
+blred="\e[101m"
+blgreen="\e[102m"
+blyellow="\e[103m"
+blblue="\e[104m"
+blmagenta="\e[105m"
+blcyan="\e[106m"
+bwhite="\e[107m"
+
+# Unset variables used by .bashrc
+unset usr
+unset etc
+unset bin
+unset var
+unset date
+
+# PS1
+function return_value(){
+	retval=$?
+	if [[ $retval -ne 0 ]]; then
+		echo -e "${lred}$retval${fdefault}"
+	else
+		echo -e "${lgreen}$retval${fdefault}"
+	fi
+}
+
+function remote_host(){
+	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+		echo -e "${lred}@${fdefault}"
+	else
+		echo "@"
+	fi
+}
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r $etc/debian_chroot ]; then
+	debian_chroot=$(cat $etc/debian_chroot)
+fi
+t_date=$(dateCmd +"%l.%m%P")
+
+PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u`remote_host`\h: \[\e]0;\w\a\n\\$ "
