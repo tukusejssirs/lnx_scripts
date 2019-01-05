@@ -1,4 +1,3 @@
-#!/bin/bash
 function remote_host(){
 	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 		echo -e "${lred}@${fdefault}"
@@ -7,7 +6,7 @@ function remote_host(){
 	fi
 }
 
-function prompt(){
+prompt(){
 	local EXIT="$?"  # Return code
 	PS1=""
 
@@ -22,9 +21,11 @@ function prompt(){
 		debian_chroot=$(cat $etc/debian_chroot)
 	fi
 
-	PS1="${normal}[${purple}\\D{%-l:%M%P}${normal}]${return} ${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ "
+	local t_date=$(dateCmd +"%l.%m%P")
 
-	# PS1="\n[${green}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u`remote_host`\h: \[\e]0;\w\a\n\\$ "
+	#PS1="${normal}[${purple}\\D{%-l:%M%P}${normal}]${return}h${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ "
 
-	#export PROMPT_COMMAND=prompt
+	PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u`remote_host`\h: \[\e]0;\w\a\n\\$ "
 }
+
+export PROMPT_COMMAND=prompt
