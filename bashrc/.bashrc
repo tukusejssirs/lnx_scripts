@@ -20,7 +20,7 @@
 # Check where we are running the shell (Android/Termux, Linux)
 # Then set some system-dependant variables
 if [[ $(uname -o) == "Android" ]]; then
-	if [[ (echo $SHELL) == "/data/data/com.termux/files/usr/bin/login" ]] || [[ $(echo $SHELL) == "/data/data/com.termux/files/usr/bin/bash" ]]; then
+	if [[ $(echo $SHELL) == "/data/data/com.termux/files/usr/bin/login" ]] || [[ $(echo $SHELL) == "/data/data/com.termux/files/usr/bin/bash" ]]; then
 		# We are in Android/Termux
 		usr="/data/data/com.termux/files/usr"
 		etc="/data/data/com.termux/files/usr/etc"
