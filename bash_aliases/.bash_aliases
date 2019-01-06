@@ -39,6 +39,7 @@ alias gs="git status"
 
 # apt aliases
 alias upgrade="sudo apt-get -yq update && sudo apt-get -yq --with-new-pkgs upgrade"
+alias install="sudo apt-get -yq install"
 
 # Add an "alert" alias for long running commands. Use like so:
 # sleep 10; alert
