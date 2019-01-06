@@ -19,8 +19,8 @@
 
 # Check where we are running the shell (Android/Termux, Linux)
 # Then set some system-dependant variables
-if [[ `uname -o` == "Android" ]]; then
-	if [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/login" ]] || [[ `echo $SHELL` == "/data/data/com.termux/files/usr/bin/bash" ]]; then
+if [[ $(uname -o) == "Android" ]]; then
+	if [[ (echo $SHELL) == "/data/data/com.termux/files/usr/bin/login" ]] || [[ $(echo $SHELL) == "/data/data/com.termux/files/usr/bin/bash" ]]; then
 		# We are in Android/Termux
 		usr="/data/data/com.termux/files/usr"
 		etc="/data/data/com.termux/files/usr/etc"
@@ -32,10 +32,10 @@ if [[ `uname -o` == "Android" ]]; then
 		PATH=/su/bin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets
 
 		# apt aliases
-	alias upgrade="apt-get -yq update && apt-get -yq --with-new-pkgs upgrade"
-	alias install="apt-get -yq install"
+		alias upgrade="apt-get -yq update && apt-get -yq --with-new-pkgs upgrade"
+		alias install="apt-get -yq install"
 	fi
-elif [[ `uname -o` == "GNU/Linux" ]]; then
+elif [[ $(uname -o) == "GNU/Linux" ]]; then
 	# apt aliases
 	alias upgrade="sudo apt-get -yq update && sudo apt-get -yq --with-new-pkgs upgrade"
 	alias install="sudo apt-get -yq install"
