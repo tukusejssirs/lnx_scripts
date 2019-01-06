@@ -233,13 +233,21 @@ if [ -z "${debian_chroot:-}" ] && [ -r $etc/debian_chroot ]; then
 	debian_chroot=$(cat $etc/debian_chroot)
 fi
 
-# PS1="${normal}[${purple}\\D{%-l:%M%P}${normal}]${return} ${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ "
-
 t_date=$(dateCmd +"%l.%m%P")
 
-# PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` ${debian_chroot:+($debian_chroot)}\u` remote_host`\h: \[\e]0;\w\a\n\\$ "
+PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` \u`remote_host`\h: \w\n\$ "
 
-PS1="\n[${lmagenta}$t_date${fdefault}]\`return_value\` \\u`remote_host`\\h: \\w\n\\$ "
+# \n - newline
+# ${lmagenta} - light magenta (colour)
+# $t_date - variable to custom date format
+# ${fdefault} - default/normal colour
+# return_value - function to return coloured return (or exit?) value
+# \u - current user name
+# remote_host - function to return a "@" that is either red (if the host is remote), otherwise in normal colour
+# \h -  host name
+# \w - current working directory
+# \$ - if user is user 0 (root), displays "#", otherwise "$"
+# [other chars] - literal text
 
 # Unset variables used by .bashrc
 unset usr
