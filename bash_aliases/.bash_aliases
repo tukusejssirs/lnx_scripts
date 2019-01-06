@@ -18,7 +18,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # shell aliases
 # Reload the $HOME/.bashrc file
-alias src="source $HOME/.bashrc"
+alias srcb="source $HOME/.bashrc"
 # Move back into previous directory; useful when you change between two different dirs, but useless when going up and down in a directory tree
 alias back="cd $OLDPWD"
 

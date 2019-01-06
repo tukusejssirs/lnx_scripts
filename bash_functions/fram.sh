@@ -8,5 +8,5 @@
 
 #!/bin/bash
 function fram(){
-	free $1; sync && sudo su -c "echo 2 > /proc/sys/vm/drop_caches" && echo && free $1
+	free -h $1; sync && sudo su -c "echo 2 > /proc/sys/vm/drop_caches" && echo && free -h $1
 }
