@@ -30,8 +30,16 @@ if [[ `uname -o` == "Android" ]]; then
 
 		# To make `su` work, add `/su/bin/` to $PATH
 		PATH=/su/bin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets
+
+		# apt aliases
+	alias upgrade="apt-get -yq update && apt-get -yq --with-new-pkgs upgrade"
+	alias install="apt-get -yq install"
 	fi
 elif [[ `uname -o` == "GNU/Linux" ]]; then
+	# apt aliases
+	alias upgrade="sudo apt-get -yq update && sudo apt-get -yq --with-new-pkgs upgrade"
+	alias install="sudo apt-get -yq install"
+	
 	usr="/usr"
 	etc="/etc"
 	bin="/bin"
