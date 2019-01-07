@@ -39,7 +39,7 @@ elif [[ $(uname -o) == "GNU/Linux" ]]; then
 	# apt aliases
 	alias upgrade="sudo apt-get -yq update && sudo apt-get -yq --with-new-pkgs upgrade"
 	alias install="sudo apt-get -yq install"
-	
+
 	usr="/usr"
 	etc="/etc"
 	bin="/bin"
@@ -75,7 +75,7 @@ shopt -s globstar
 
 # Coloured GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
+ 
 if [ -n "$force_color_prompt" ]; then
 	if [ -x $usr/bin/tput ] && tput setaf 1 >&$dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -125,7 +125,7 @@ if ! shopt -oq posix; then
 fi
 
 # Unset variables used by .bashrc
-unset usrunset usr
+unset usr
 unset etc
 unset bin
 unset var
