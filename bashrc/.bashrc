@@ -133,6 +133,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# ssh
+eval `ssh-agent -s` &> /dev/null
+for n in `ls $HOME/.ssh/*.pub | sed 's/\.pub//g' -`; do
+	ssh-add -q $n
+done
+
 # Unset variables used by .bashrc
 unset usr
 unset etc

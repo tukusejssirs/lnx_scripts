@@ -38,12 +38,11 @@ function prompt(){
 	PS1+="\n"
 
     ## Date
-    PS1+="[${magenta}\D{%l.%m%P}${fdefault}]"
+    PS1+="[${magenta}\D{%l.%M%P}${fdefault}]"
 
     # Exit code
     if [ $EXIT != 0 ]; then
-        ## Can add `kill -l $?` to test to filter backgrounded
-        PS1+="${red}${EXIT}${fdefault}"     ## Add exit code, if non 0
+        PS1+="${red}${EXIT}${fdefault}"
     else
     	PS1+="${fdefault}${EXIT}"
     fi
