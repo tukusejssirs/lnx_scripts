@@ -96,19 +96,28 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See $usr/share/doc/bash-doc/examples in the bash-doc package.
 ### Interactive ### {{{
 if [[ $- == *i* ]]; then
+	path_fn="$HOME/git/lnx_scripts/bash_functions"
 	# 'Source' function
-	if [ -s $HOME/git/lnx_scripts/bash_functions/src.sh ]; then
-		. $HOME/git/lnx_scripts/bash_functions/src.sh
-	fi
+	source $path_fn/src.sh
 
 	# Bash colours
-	src $HOME/git/lnx_scripts/bash_functions/bash_colours.sh
+	src $path_fn/bash_colours.sh
 
 	# Bash aliases
 	src $HOME/.bash_aliases
 
 	# Bash functions
-	src $HOME/.bash_functions
+	src $path_fn/add_ssh_keys.sh
+	src $path_fn/cconv.sh
+	src $path_fn/char_multiplier.sh
+	src $path_fn/create_ssh_keys.sh
+	src $path_fn/cue2cd.sh
+	src $path_fn/fram.sh
+	src $path_fn/gup.sh
+	src $path_fn/prompt.sh
+	src $path_fn/prosby.sh
+	src $path_fn/round.sh
+	src $path_fn/up.sh
 
 	# Bash programs
 	src $HOME/.bash_progs
