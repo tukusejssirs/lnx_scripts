@@ -53,7 +53,7 @@ function prompt(){
     	nnnn=true
     else
     	# Local host
-        local userHost="${lyellow}\u@\h: ${fdefault}"
+        local userHost="${lyellow}\u@\h:${fdefault}"
     fi
 
 # export PS1="\n[${lmagenta}\D{%l.%m%P}${fdefault}]$(EXIT="$?"; if [[ EXIT == 0 ]]; then echo "${?}"; else echo "${lred}${?}${fdefault}"; fi) \u@\h: \w\n\$ "
