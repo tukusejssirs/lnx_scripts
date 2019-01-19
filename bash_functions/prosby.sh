@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # progress aliases
-#function prosby(){
+function prosby(){
 	fdefault="\e[39m"
 	lred="\e[91m"
 	lgreen="\e[92m"
@@ -18,9 +18,7 @@
 	chckdPer=$(LC_ALL=C /usr/bin/printf "%04.1f\n" $(echo "$chckd * 100 / $total" | bc -l))
 	todoPer=$(LC_ALL=C /usr/bin/printf "%04.1f\n" $(echo "$chckd * 100 / $total" | bc -l))
 
-# i ii c + todo = total
-# i (%), ii (%), c (%) + todo (%) = total
 	echo -e "${lyellow}smv_i${fdefault}         ${lred}smv_ii${fdefault}         ${lgreen}chckd${fdefault}         ${lmagenta}todo${fdefault}           ${lblue}total${fdefault}"
 	echo -e "${lyellow}$smv_i ($smv_iPer %)${fdefault}, ${lred}$smv_ii ($smv_iiPer %)${fdefault}, ${lgreen}$chckd ($chckdPer %)${fdefault} + ${lmagenta}$todo ($todoPer %)${fdefault} = ${lblue}$total${fdefault}"
-#}
+}
 
