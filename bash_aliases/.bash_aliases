@@ -64,4 +64,7 @@ for n in {af,am,ar,az,ba,be,bg,bn,bs,ca,ceb,co,cs,cy,da,de,el,emj,en,eo,es,et,eu
 done
 
 # ftp
-alias mm="lftp -u mrtvamanzelkacz,$(<~/.mm.cz/ftp) ftpx.forpsi.com  "
+if [[ -e $HOME/.mm.cz/ftp ]]; then
+	alias mm="lftp -u 
+mrtvamanzelkacz,$(<$HOME/.mm.cz/ftp) ftpx.forpsi.com  "
+fi
