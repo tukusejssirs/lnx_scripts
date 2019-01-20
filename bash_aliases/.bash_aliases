@@ -2,15 +2,16 @@
 # TODO: find my old ls aliases
 # enable color support of ls and also add handy aliases
 if [ -x $usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias ls='ls --color=auto'
-	alias ll='ls -alF --color=auto'
-	alias la='ls -A --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+	alias ls='ls --color=auto'
+	alias ll='ls -AlhF --color=auto'
+	alias la='ls -lhA --color=auto'
 	alias l='ls -CF --color=auto'
+	alias lh='ls -Alh --color=auto'
 fi
 
 # Coloured GCC warnings and errors
@@ -21,9 +22,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 alias srcb="source $HOME/.bashrc"
 # Move back into previous directory; useful when you change between two different dirs, but useless when going up and down in a directory tree
 alias back="cd $OLDPWD"
-
-# progress aliases
-alias prosby='fdefault="\e[39m" && lred="\e[91m" && lgreen="\e[92m" && lyellow="\e[93m" && lblue="\e[94m" && lmagenta="\e[95m" && smv_i=$(printf "%5s" `ls $HOME/git/prosby_ocr/txt/smv_i | wc -l`) && smv_ii=$(printf "%6s" `ls $HOME/git/prosby_ocr/txt/smv_ii | wc -l`) && chckd=$(printf "%5s" `ls $HOME/git/prosby_ocr/txt/chckd | wc -l`) && todo=$(printf "%4s" $(expr $smv_i + $smv_ii - $chckd)) && total=$(printf "%4s" $(expr $smv_i + $smv_ii + $chckd)) && chckdPer=$(LC_ALL=C /usr/bin/printf "%05.2f\n" $(echo "$chckd * 100 / ($smv_i + $smv_ii)" | bc -l)) && todoPer=$(LC_ALL=C /usr/bin/printf "%05.2f\n" $(echo "$chckd * 100 / ($smv_i + $smv_ii)" | bc -l)) && echo -e "${lyellow}smv_i${fdefault}    ${lred}smv_ii${fdefault}      ${lgreen}chckd${fdefault}            ${lmagenta}todo${fdefault}            ${lblue}total${fdefault}" && echo -e "${lyellow}$smv_i${fdefault}  + ${lred}$smv_ii${fdefault}  -${lgreen}$chckd ($chckdPer %)${fdefault}  = ${lmagenta}$todo ($todoPer %)${fdefault}  ${lblue}$total${fdefault}"'
 
 # git aliases
 alias ga="git add"
@@ -65,6 +63,6 @@ done
 
 # ftp
 if [[ -e $HOME/.mm.cz/ftp ]]; then
-	alias mm="lftp -u 
+	alias mm="lftp -u
 mrtvamanzelkacz,$(<$HOME/.mm.cz/ftp) ftpx.forpsi.com  "
 fi

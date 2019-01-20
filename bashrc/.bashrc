@@ -75,7 +75,7 @@ shopt -s globstar
 
 # Coloured GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
- 
+
 if [ -n "$force_color_prompt" ]; then
 	if [ -x $usr/bin/tput ] && tput setaf 1 >&$dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -127,9 +127,9 @@ fi
 # Note: You don't need to enable this, if it's already enabled in $etc/bash.bashrc and $etc/profile sources /etc/bash.bashrc.
 if ! shopt -oq posix; then
   if [ -f $usr/share/bash-completion/bash_completion ]; then
-	. $usr/share/bash-completion/bash_completion
+	src $usr/share/bash-completion/bash_completion
   elif [ -f $etc/bash_completion ]; then
-	. $etc/bash_completion
+	src $etc/bash_completion
   fi
 fi
 
@@ -138,12 +138,3 @@ eval `ssh-agent -s` &> /dev/null
 for n in `ls $HOME/.ssh/*.pub | sed 's/\.pub//g' -`; do
 	ssh-add -q $n &> /dev/null
 done
-
-# Unset variables used by .bashrc
-unset usr
-unset etc
-unset bin
-unset var
-unset etc
-unset bin
-unset var
