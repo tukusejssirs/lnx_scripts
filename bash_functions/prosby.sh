@@ -21,4 +21,3 @@ function prosby(){
 	echo -e "${lyellow}smv_i${fdefault}         ${lred}smv_ii${fdefault}         ${lgreen}chckd${fdefault}         ${lmagenta}todo${fdefault}           ${lblue}total${fdefault}"
 	echo -e "${lyellow}$smv_i ($smv_iPer %)${fdefault}, ${lred}$smv_ii ($smv_iiPer %)${fdefault}, ${lgreen}$chckd ($chckdPer %)${fdefault} + ${lmagenta}$todo ($todoPer %)${fdefault} = ${lblue}$total${fdefault}"
 }
-
