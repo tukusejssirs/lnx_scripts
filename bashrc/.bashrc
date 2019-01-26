@@ -117,6 +117,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/prompt.sh
 	src $path_fn/prosby.sh
 	src $path_fn/round.sh
+	src $path_fn/scan.sh
 	src $path_fn/up.sh
 
 	# Bash programs
