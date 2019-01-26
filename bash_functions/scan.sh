@@ -1,20 +1,28 @@
 # This script eases scanning from terminal.
 
+# Exit codes:
+# 0 success
+# 1 invalid scanning mode
+# 2 invalid file format
+
 # scanimage [grey|colour|lineart] [filename.ext]
 
 # author:  Tukusej's Sirs
 # date:    26 Jan 2019
 # version: 1.0
 
+# TODO:
+# - retVal's are not working yet
+
 #!/bin/bash
 function scan(){
+	retVal=0
 	# Device
-	if($SANE_DEFAULT_DEVICE != ""); then
-		device=$SANE_DEFAULT_DEVICE
-	else
+	if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
 		SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
-		device=$SANE_DEFAULT_DEVICE
 	fi
+
+	device=$SANE_DEFAULT_DEVICE
 
 	# Options
 	opt="-p --resolution 600"
@@ -37,6 +45,7 @@ function scan(){
 			;;
 		*)
 			echo "ERROR: Scanning mode is invalid. Valid modes are grey, colour or lineart."
+			retVal=1
 	esac
 
 	# File format
@@ -59,8 +68,13 @@ function scan(){
 			;;
 		*)
 			echo "ERROR: Unknown format. Valid formats are png, jpg, tif, pnm."
+			retVal=2
 	esac
 
 	# Actual command
-	scanimage -d $device $opt --format=$format > "$filename"
+	# if [[ $retVal > 0 ]]; then
+		scanimage -d $device $opt --format=$format > "$filename"
+	# else
+	# 	return $retVal
+	# fi
 }

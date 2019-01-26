@@ -114,6 +114,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/cue2cd.sh
 	src $path_fn/fram.sh
 	src $path_fn/gup.sh
+	src $path_fn/mkcd.sh
 	src $path_fn/prompt.sh
 	src $path_fn/prosby.sh
 	src $path_fn/round.sh
