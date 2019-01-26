@@ -11,4 +11,5 @@ function up(){
 
 	for n in $(seq 1 $d); do dots+="../"; done
 	cd $dots
+	unset dots
 }
