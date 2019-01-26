@@ -9,7 +9,7 @@
 #!/bin/bash
 function scan(){
 	# Device
-	if(SANE_DEFAULT_DEVICE != ""); then
+	if($SANE_DEFAULT_DEVICE != ""); then
 		device=$SANE_DEFAULT_DEVICE
 	else
 		SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
