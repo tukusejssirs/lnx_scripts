@@ -113,6 +113,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/create_ssh_keys.sh
 	src $path_fn/cue2cd.sh
 	src $path_fn/fram.sh
+	src $path_fn/gls.sh
 	src $path_fn/gup.sh
 	src $path_fn/mkcd.sh
 	src $path_fn/prompt.sh
