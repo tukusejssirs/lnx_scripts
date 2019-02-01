@@ -1,20 +1,17 @@
-# This script
+# This script can be used to check the latest version of OpenGApps, download latest version of them, automatically reboot to TWRP, install it and reboot back to Android again.
+
+# It can be used in some kind of cronjob to make it fully automatic. I execute the script in Termux and via termux-tasker connect it to Tasker, in which I created a recurring task at 2am each day to execute this script.
 
 # author:  Tukusej's Sirs
 # version: 1.0
 # date:    1 Feb 2019
 
-# dependencies (Android):     termux termux-tasker tasker rooted_android bash_shell
-# dependencies (Termux/Bash): sudo cat grep sed if curl jq wget echo reboot return
+# dependencies (Android):     termux termux-tasker tasker rooted_android su bash_shell
+# dependencies (Termux/Bash): termux-sudo coreutils grep sed curl jq wget ncurses-utils
 
 # TODO:
 # - make it work without termux
 # - create ogus_init.sh
-
-# Install sudo if (1) not root and (2) running in termux and (3) no sudo installed; othewise try to use su, else fail
-# git dl sudo
-#ln -s $PWD/sudo /data/data/com.termux/files/usr/bin/sudo
-#chmod 700 ./sudo /data/data/com.termux/files/usr/bin/sudo
 
 #!/bin/bash
 # Colour definitions
