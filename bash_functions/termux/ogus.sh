@@ -13,7 +13,7 @@
 # - make it work without termux
 # - create ogus_init.sh
 
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 # Colour definitions
 fdefault="\e[39m"  # Default format and colour
 lred="\e[91m"      # Light red
