@@ -3,6 +3,8 @@
 
 # It can be used in some kind of cronjob to make it fully automatic. I execute the script in Termux and via termux-tasker connect it to Tasker, in which I created a recurring task at 2am each day to execute this script.
 
+# Btw, this is why I named this script as `ogus`: Open Gapps Update Script
+
 # author:  Tukusej's Sirs
 # version: 1.0
 # date:    1 Feb 2019
@@ -13,6 +15,7 @@
 # TODO:
 # - make it work without termux
 # - create ogus_init.sh
+# - create an after-boot-up script that would delete the update.zip
 
 # Colour definitions
 fdefault="\e[39m"  # Default format and colour
