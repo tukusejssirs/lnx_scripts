@@ -1,3 +1,4 @@
+#!/data/data/com.termux/files/usr/bin/bash
 # This script can be used to check the latest version of OpenGApps, download latest version of them, automatically reboot to TWRP, install it and reboot back to Android again.
 
 # It can be used in some kind of cronjob to make it fully automatic. I execute the script in Termux and via termux-tasker connect it to Tasker, in which I created a recurring task at 2am each day to execute this script.
@@ -13,7 +14,6 @@
 # - make it work without termux
 # - create ogus_init.sh
 
-#!/data/data/com.termux/files/usr/bin/bash
 # Colour definitions
 fdefault="\e[39m"  # Default format and colour
 lred="\e[91m"      # Light red
@@ -22,7 +22,7 @@ lmagenta="\e[95m"  # Light magenta
 echo -e "${lmagenta}Checking Open GApps configuration and version ...${fdefault}"
 type=$(sudo cat /system/etc/g.prop | grep ro.addon.type | sed 's/^.*type=\(.*\)$/\1/' -)
 
-if [[ $type == "gapps" ]]; then
+if [[ "$type" == "gapps" ]]; then
 	arch=$(sudo cat /system/etc/g.prop | grep arch | sed 's/^.*arch=\(.*\)$/\1/' -)
 	sdk=$(sudo cat /system/etc/g.prop | grep sdk | sed 's/^.*sdk=\(.*\)$/\1/' -)
 	platform=$(sudo cat /system/etc/g.prop | grep platform | sed 's/^.*platform=\(.*\)$/\1/' -)
