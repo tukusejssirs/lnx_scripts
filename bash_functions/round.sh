@@ -5,5 +5,5 @@
 
 #!/bin/bash
 function round(){
-	LC_ALL=C /usr/bin/printf "%.*f\n" $1 $2
+	LC_ALL=C $(which printf) "%.*f\n" $1 $2
 }

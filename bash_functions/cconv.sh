@@ -8,14 +8,15 @@
 #!/bin/bash
 function cconv(){
 	return_code=0
+	printf=$(which printf)
 
 	case $1 in
 		''|*[!0-9.-]*) echo 'Error: First argument must be a number, but it is "$1".' && return 1 ;;
-		*) sum=`printf "%1.4f" $1` ;;
+		*) sum=$($printf "%1.4f" $1) ;;
 	esac
 
-	from=`echo $2 | tr '[:lower:]' '[:upper:]'`
-	to=`echo $3 | tr '[:lower:]' '[:upper:]'`
+	from=$(echo $2 | tr '[:lower:]' '[:upper:]')
+	to=$(echo $3 | tr '[:lower:]' '[:upper:]')
 
 	if [[ $from == $to ]]; then
 		echo "Warning: The source currency equals the target one."
@@ -51,8 +52,8 @@ function cconv(){
 
 	    return 1;
 	}
-	
-	data=`wget -o /dev/null -O - "https://frankfurter.app/$date?base=$from&symbols=$to"`
+
+	data=$(wget -o /dev/null -O - "https://frankfurter.app/$date?base=$from&symbols=$to")
 
 	case $data in
 		'')
@@ -72,12 +73,12 @@ function cconv(){
 	esac
 
 	# For multiple target currencies, we need to split the currencies
-	currency_num=`echo $(echo $to | awk -F, '{print NF-1}') + 1 | bc`  # The number of commas plus one
+	currency_num=$(echo $(echo $to | awk -F, '{print NF-1}') + 1 | bc)  # The number of commas plus one
 	if [[ currency_num -eq 1 ]]; then  # Single target currency
-		rate=`echo $data | sed "s/.*rates\":[{]\"$to\":\([0-9.]*\).*/\1/g" -`
-		echo $to $(round 5 `echo $sum \* $rate | bc -lq`)
+		rate=$(echo $data | sed "s/.*rates\":[{]\"$to\":\([0-9.]*\).*/\1/g" -)
+		echo $to $(round 5 $(echo $sum \* $rate | bc -lq))
 	else  # Multiple target currency
-		for n in `seq 1 $currency_num`; do
+		for n in $(seq 1 $currency_num); do
 			to_split=$(echo $to | cut -f $n -d,)  # Splitting $to into $to_arr
 
 			if [[ $from == $to_split ]]; then
@@ -85,8 +86,8 @@ function cconv(){
 				return_code=2
 				echo $to_split $sum
 			else
-				rate=`echo $data | sed "s/.*$to_split\":\([0-9.]*\).*/\1/" -`
-				echo $to_split $(round 5 `echo $sum \* $rate | bc -lq`)
+				rate=$(echo $data | sed "s/.*$to_split\":\([0-9.]*\).*/\1/" -)
+				echo $to_split $(round 5 $(echo $sum \* $rate | bc -lq))
 			fi
 		done
 	fi

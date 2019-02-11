@@ -31,16 +31,15 @@ if [[ "$type" == "gapps" ]]; then
 	platform=$(sudo cat /system/etc/g.prop | grep platform | sed 's/^.*platform=\(.*\)$/\1/' -)
 	open_type=$(sudo cat /system/etc/g.prop | grep open_type | sed 's/^.*open_type=\(.*\)$/\1/' -)
 	curVer=$(sudo cat /system/etc/g.prop | grep version | sed 's/^.*version=\(.*\)$/\1/' -)
-	latVer=$(curl --silent "https://api.github.com/repos/opengapps/arm64/releases/latest" | jq -r .tag_name)
+	latVer=$(curl --silent "https://api.github.com/repos/opengapps/$arch/releases/latest" | jq -r .tag_name)
 
 	if [[ $curVer < $latVer ]]; then
 		echo -e "${lmagenta}Found newer version ($latVer).\nDownloading ...${fdefault}"
 		wget -q -O /storage/emulated/0/dls/update.zip https://github.com/opengapps/$arch/releases/download/$latVer/open_gapps-$arch-$platform-$open_type-$latVer.zip
 
 		echo -e "${lmagenta}Download complete.\nCreating Open Recovery Script and rebooting ...${fdefault}"
-		# src: https://android.stackexchange.com/questions/67622/shell-script-to-reboot-into-recovery-and-install-zip
-		sudo bash -c "echo -e 'install /storage/emulated/0/dls/update.zip\nreboot' > /cache/recovery/openrecoveryscript"
-		sudo reboot recovery
+		sudo bash -c "echo -e 'install /storage/emulated/0/dls/update.zip\nrm /storage/emulated/0/dls/update.zip\nreboot' > /cache/recovery/openrecoveryscript"
+		#sudo reboot recovery
 	elif [[ $curVer == $latVer ]]; then
 		echo -e "${lmagenta}Open GApps version $latVer is already the latest version, no need to update it.${fdefault}"
 	else
