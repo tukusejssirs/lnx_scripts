@@ -1,20 +1,20 @@
 <TaskerData sr="" dvi="1" tv="5.6">
 	<Profile sr="prof49" ve="2">
 		<cdate>1548863238038</cdate>
-		<edate>1549051196094</edate>
+		<edate>1550991782169</edate>
 		<id>49</id>
 		<mid0>44</mid0>
 		<nme>ogus_cron</nme>
 		<Time sr="con0">
-			<fh>2</fh>
-			<fm>0</fm>
-			<th>2</th>
-			<tm>0</tm>
+			<fh>3</fh>
+			<fm>20</fm>
+			<th>3</th>
+			<tm>20</tm>
 		</Time>
 	</Profile>
 	<Task sr="task44">
 		<cdate>1548861783924</cdate>
-		<edate>1548862323122</edate>
+		<edate>1549116376971</edate>
 		<id>44</id>
 		<nme>ogus.sh</nme>
 		<pri>100</pri>
@@ -27,11 +27,11 @@
 					<com.termux.execute.arguments-type>java.lang.String</com.termux.execute.arguments-type>
 					<com.termux.tasker.extra.EXECUTABLE>ogus.sh</com.termux.tasker.extra.EXECUTABLE>
 					<com.termux.tasker.extra.EXECUTABLE-type>java.lang.String</com.termux.tasker.extra.EXECUTABLE-type>
-					<com.termux.tasker.extra.TERMINAL>false</com.termux.tasker.extra.TERMINAL>
+					<com.termux.tasker.extra.TERMINAL>true</com.termux.tasker.extra.TERMINAL>
 					<com.termux.tasker.extra.TERMINAL-type>java.lang.Boolean</com.termux.tasker.extra.TERMINAL-type>
 					<com.termux.tasker.extra.VERSION_CODE>3</com.termux.tasker.extra.VERSION_CODE>
 					<com.termux.tasker.extra.VERSION_CODE-type>java.lang.Integer</com.termux.tasker.extra.VERSION_CODE-type>
-					<com.twofortyfouram.locale.intent.extra.BLURB>Execute ~/.termux/tasker/ogus.sh </com.twofortyfouram.locale.intent.extra.BLURB>
+					<com.twofortyfouram.locale.intent.extra.BLURB>Execute ~/.termux/tasker/ogus.sh  in a terminal session.</com.twofortyfouram.locale.intent.extra.BLURB>
 					<com.twofortyfouram.locale.intent.extra.BLURB-type>java.lang.String</com.twofortyfouram.locale.intent.extra.BLURB-type>
 					<net.dinglisch.android.tasker.extras.VARIABLE_REPLACE_KEYS>com.termux.tasker.extra.EXECUTABLE com.termux.execute.arguments com.termux.tasker.extra.TERMINAL</net.dinglisch.android.tasker.extras.VARIABLE_REPLACE_KEYS>
 					<net.dinglisch.android.tasker.extras.VARIABLE_REPLACE_KEYS-type>java.lang.String</net.dinglisch.android.tasker.extras.VARIABLE_REPLACE_KEYS-type>
