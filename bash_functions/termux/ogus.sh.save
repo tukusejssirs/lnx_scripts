@@ -41,7 +41,7 @@ if [[ "$type" == "gapps" ]]; then
 	if [[ $curVer < $latVer ]]; then
 		echo -en "${lmagenta}Found newer version ($latVer).\nDownloading ... ${fdefault}"
 		cd $path
-		wget $url/$zip{,.md5}
+		wget -q $url/$zip{,.md5}
 		cd $OLDPWD
 		echo -e "${lmagenta}Done.${fdefault}"
 
@@ -51,16 +51,13 @@ if [[ "$type" == "gapps" ]]; then
 		if [[ "$zip_md5" == "$md5_md5" ]]; then
 			echo -e "${lmagenta}Done.${fdefault}"
 		else
-			echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):"
-			read -t 5 ans
-			case $ans in
-				y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
-				n|N|no|NO) exit 3 ;;
-			esac
+			echo -e "${lred}\nERROR: MD5 hashes does not 
+match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want 
+to continue? You have 5 seconds to answer (*no | yes): ""
 		fi
 
 		echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
-		sudo bash -c "echo -e 'install $path/$zip\nrm $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
+		sudo bash -c "echo -e 'install /storage/emulated/0/dls/update.zip\nrm /storage/emulated/0/dls/update.zip\nreboot' > /cache/recovery/openrecoveryscript"
 		#sudo reboot recovery
 	elif [[ $curVer == $latVer ]]; then
 		echo -e "${lmagenta}Open GApps version $latVer is already the latest version, no need to update it.${fdefault}"
