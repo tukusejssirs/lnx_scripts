@@ -6,8 +6,8 @@
 # Btw, this is why I named this script as `ogus`: Open Gapps Update Script
 
 # author:  Tukusej's Sirs
-# version: 1.1
-# date:    23 Feb 2019
+# version: 1.2
+# date:    3 Mar 2019
 
 # dependencies (Android):     termux termux-tasker tasker rooted_android su bash_shell
 # dependencies (Termux/Bash): termux-sudo coreutils grep sed curl jq wget ncurses-utils
@@ -41,12 +41,15 @@ if [[ "$type" == "gapps" ]]; then
 	if [[ $curVer < $latVer ]]; then
 		echo -en "${lmagenta}Found newer version ($latVer).\nDownloading ... ${fdefault}"
 		cd $path
-		wget $url/$zip{,.md5}
+		rm -rf open_gapps*
+		wget -q $url/$zip{,.md5}
 		cd $OLDPWD
 		echo -e "${lmagenta}Done.${fdefault}"
 
 		echo -en "${lmagenta}Checking MD5 hashes ... ${fdefault}"
-		zip_md5=$(md5sum $path/$zip)
+		cd $path
+		zip_md5=$(md5sum $zip)
+		cd $OLDPATH
 		md5_md5=$(cat $path/$zip.md5)
 		if [[ "$zip_md5" == "$md5_md5" ]]; then
 			echo -e "${lmagenta}Done.${fdefault}"
@@ -55,13 +58,13 @@ if [[ "$type" == "gapps" ]]; then
 			read -t 5 ans
 			case $ans in
 				y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
-				n|N|no|NO) exit 3 ;;
+				*) exit 3 ;;
 			esac
 		fi
 
 		echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
-		sudo bash -c "echo -e 'install $path/$zip\nrm $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
-		#sudo reboot recovery
+		sudo bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
+		sudo reboot recovery
 	elif [[ $curVer == $latVer ]]; then
 		echo -e "${lmagenta}Open GApps version $latVer is already the latest version, no need to update it.${fdefault}"
 	else
