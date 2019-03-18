@@ -26,14 +26,27 @@ alias back="cd $OLDPWD"
 # git aliases
 alias ga="git add"
 alias gb="git branch"
+alias gbd="git branch --delete"
 alias gce="git clean"
+alias gcfg="git config"
+alias gcfe="git config --global user.email"
+alias gcfn="git config --global user.name"
 alias gcl="git clone"
-alias gcm="git commit -am"
+alias gcm="git commit -m"
+alias gf="git fetch"
+alias gmg="git merge"
 alias gmv="git mv"
 alias gpl="git pull"
 alias gph="git push"
 alias grm="git rm"
+alias grms="git rm --cached"
+alias grmr="reset HEAD --"
 alias gs="git status"
+alias gl="git log"
+alias glg='git log --pretty=format:"%h %s" --graph'
+alias gl1="git log --pretty=oneline"
+alias gco="git checkout"
+alias gcb="git checkout -b"
 
 # Add an "alert" alias for long running commands. Use like so:
 # sleep 10; alert
