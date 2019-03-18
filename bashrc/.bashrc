@@ -73,6 +73,11 @@ elif [[ $(uname -o) == "GNU/Linux" ]]; then
 			file=$(wslpath -aw $1)
 			/mnt/c/Program\ Files/Sublime\ Text\ 3/sublime_text.exe "$file"
 		}
+
+		function cmd(){
+			file=$(wslpath -aw $1)
+			/mnt/c/Windows/System32/cmd.exe "$file"
+		}
 	fi
 fi
 
