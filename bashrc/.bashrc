@@ -46,6 +46,34 @@ elif [[ $(uname -o) == "GNU/Linux" ]]; then
 	bin="/bin"
 	var="/var"
 	dev="/dev"
+
+	if [[ $(uname -r | grep -o "Microsoft$") == "Microsoft" ]]; then
+		# Support of Linux permissions in the WSL
+		#cwd=$PWD
+		# cd /  # Change to dir outside /mnt/c (or the symlink to it)
+		# sudo umount /mnt/c && sudo mount -t drvfs C: /mnt/c -o metadata  # Remount /mnt/c with linux perms support
+		# cd $cwd  # Enter the home dir when started
+
+		# Functions to run MS Windows apps
+		# TODO:
+		# - create one function for all of these; ideally all from the win path
+		# - make it work with `sudo`
+		# - move them to `bash_functions/` dir and source them in `.bashrc`
+		function indi(){
+			file=$(wslpath -aw $1)
+			/mnt/c/Program\ Files/Adobe/Adobe\ InDesign\ CC\ 2018/InDesign.exe "$file"
+		}
+
+		function ff(){
+			file=$(wslpath -aw $1)
+			/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe "$file"
+		}
+
+		function subl(){
+			file=$(wslpath -aw $1)
+			/mnt/c/Program\ Files/Sublime\ Text\ 3/sublime_text.exe "$file"
+		}
+	fi
 fi
 
 # $HOME/.bashrc: executed by bash(1) for non-login shells.
