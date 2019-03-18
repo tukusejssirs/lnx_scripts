@@ -11,7 +11,7 @@
 # red      : aa0000 : 170   0   0
 # green    : 00aa00 :   0 170   0
 # yellow   : aa5500 : 170  85   0
-# blue     : 0000aa :   0   0 170
+# blue     : 030537 :   3   5  55
 # magenta  : aa00aa : 170   0 170
 # cyan     : 00aaaa :   0 170 170
 # lgrey    : aaaaaa : 170 170 170
