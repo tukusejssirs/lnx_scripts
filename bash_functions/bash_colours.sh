@@ -1,6 +1,28 @@
 # Format and colours variables definition
 # Note: not every terminal emulator supports all of them
 
+# terminal colour definitions
+# ===========================
+#
+# name     : hex    : rrr ggg bbb
+# ---------:--------:-------------
+# black    : 000000 :   0   0   0
+# dgrey    : 555555 :  85  85  85
+# red      : aa0000 : 170   0   0
+# green    : 00aa00 :   0 170   0
+# yellow   : aa5500 : 170  85   0
+# blue     : 0000aa :   0   0 170
+# magenta  : aa00aa : 170   0 170
+# cyan     : 00aaaa :   0 170 170
+# lgrey    : aaaaaa : 170 170 170
+# lred     : ff5555 : 255  85  85
+# lgreen   : 55ff55 :  85 255  85
+# lyellow  : ffff55 : 255 255  85
+# lblue    : 5555ff :  85  85 255
+# lmagenta : ff55ff : 255  85 255
+# lcyan    : 55ffff :  85 255 255
+# white    : ffffff : 255 255 255
+
 # Format
 bold="\e[1m"  # This is either bold (if supported) or bright in colour
 dim="\e[2m"
