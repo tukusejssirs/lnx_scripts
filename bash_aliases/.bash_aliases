@@ -47,6 +47,7 @@ alias glg='git log --pretty=format:"%h %s" --graph'
 alias gl1="git log --pretty=oneline"
 alias gco="git checkout"
 alias gcb="git checkout -b"
+alias gund="git checkout --"
 
 # Add an "alert" alias for long running commands. Use like so:
 # sleep 10; alert
