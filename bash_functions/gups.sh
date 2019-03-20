@@ -8,7 +8,7 @@
 # - when no msg is input as arg and ans is no, it won't ask me to input msg
 
 #!/bin/bash
-function gup(){
+function gups(){
 	# Check if there are any changes in local git repo since last commit
 	# src: https://stackoverflow.com/a/5143914/3408342
 	if [[ ! $(git diff-index --quiet HEAD --) ]]; then
