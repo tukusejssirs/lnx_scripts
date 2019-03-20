@@ -25,7 +25,7 @@ alias back="cd $OLDPWD"
 
 # git aliases
 alias ga="git add"
-alias gb="git branch"
+alias gb="git branch -a"
 alias gce="git clean"
 alias gcfe="git config --global user.email"
 alias gcfg="git config"
