@@ -150,6 +150,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/gcb.sh
 	src $path_fn/gls.sh
 	src $path_fn/gup.sh
+	src $path_fn/gups.sh
 	src $path_fn/mkcd.sh
 	src $path_fn/prompt.sh
 	src $path_fn/prosby.sh
