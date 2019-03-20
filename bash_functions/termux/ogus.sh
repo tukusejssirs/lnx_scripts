@@ -42,7 +42,6 @@ if [[ "$type" == "gapps" ]]; then
 		echo -en "${lmagenta}Found newer version ($latVer).\nDownloading ... ${fdefault}"
 		cd $path
 		rm -rf open_gapps*
-		echo $url/$zip
 		wget -q --show-progress --progress=bar:force:noscroll $url/$zip{.md5,}
 		cd $OLDPWD
 		echo -e "${lmagenta}Done.${fdefault}"
