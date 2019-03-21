@@ -30,6 +30,8 @@ for r in $remote_branches; do
 	if [[ $branch_name != $branch_test || $is_tracking != 0 ]]; then
 		if [[ $is_tracking != 0 ]]; then
 			git checkout $branch_name
+		else
+			git checkout -b $branch_name
 		fi
 		git checkout --track $r
 		echo "$branch_name is set to track $r"
