@@ -27,11 +27,12 @@ for r in $remote_branches; do
 	branch_name=$(echo $r | grep -o "[^/]*$")
 	branch_test=$(git branch --list $branch_name)
 	is_tracking=$(git rev-parse --abbrev-ref $branch_name@{upstream} &>/dev/null | echo $?)
-	if [[ $branch_name != $branch_test || $is_tracking != 0 ]]; then
-		if [[ $is_tracking != 0 ]]; then
-			git checkout $branch_name
+#	if [[ $branch_name != $branch_test || $is_tracking != 0 ]]; then
+#		if [[ $is_tracking != 0 ]]; then
+		if [[ $branch_name != $branch_test ]]; then
+		>	git checkout -b $branch_name
 		else
-			git checkout -b $branch_name
+			git checkout $branch_name
 		fi
 		git checkout --track $r
 		echo "$branch_name is set to track $r"
