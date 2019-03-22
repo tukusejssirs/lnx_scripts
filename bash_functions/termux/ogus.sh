@@ -6,8 +6,8 @@
 # Btw, this is why I named this script as `ogus`: Open Gapps Update Script
 
 # author:  Tukusej's Sirs
-# version: 1.2
-# date:    3 Mar 2019
+# version: 1.3
+# date:    20 Mar 2019
 
 # dependencies (Android):     termux termux-tasker tasker rooted_android su bash_shell
 # dependencies (Termux/Bash): termux-sudo coreutils grep sed curl jq wget ncurses-utils
@@ -42,7 +42,7 @@ if [[ "$type" == "gapps" ]]; then
 		echo -en "${lmagenta}Found newer version ($latVer).\nDownloading ... ${fdefault}"
 		cd $path
 		rm -rf open_gapps*
-		wget -q $url/$zip{,.md5}
+		wget -q --show-progress --progress=bar:force:noscroll $url/$zip{.md5,}  # https://stackoverflow.com/a/52844708/3408342
 		cd $OLDPWD
 		echo -e "${lmagenta}Done.${fdefault}"
 
@@ -54,7 +54,7 @@ if [[ "$type" == "gapps" ]]; then
 		if [[ "$zip_md5" == "$md5_md5" ]]; then
 			echo -e "${lmagenta}Done.${fdefault}"
 		else
-			echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):"
+			echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
 			read -t 5 ans
 			case $ans in
 				y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
