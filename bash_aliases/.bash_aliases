@@ -24,31 +24,43 @@ alias srcb="source $HOME/.bashrc"
 alias back="cd $OLDPWD"
 
 # git aliases
-alias ga="git add"
-alias gb="git branch"
-alias gba="git branch -a"
-alias gbr="git branch -r"
-alias gce="git clean"
-alias gcfe="git config --global user.email"
-alias gcfg="git config"
-alias gcfn="git config --global user.name"
-alias gcl="git clone"
-alias gcm="git commit -m"
-alias gco="git checkout"
-alias gdiff="git diff"
-alias gf="git fetch"
-alias gl1="git log --pretty=oneline"
-alias gl="git log"
-alias glg='git log --pretty=format:"%h %s" --graph'
-alias gmg="git merge"
-alias gmv="git mv"
-alias gph="git push"
-alias gpl="git pull"
-alias grm="git rm"
-alias grmr="git reset HEAD --"
-alias grms="git rm --cached"
-alias gs="git status"
-alias gund="git checkout --"
+alias ga="git add"  # Stage selected files
+alias gaa="git add --all"  # Stage all files/folders (new/modified/deleted)
+alias gb="git branch"  # Without any arg/options, list all local branches
+alias gba="git branch -a"  # Without any arg/options, list all local and remote branches
+alias gbav="git branch -av"  # Without any arg/options, list all local and remote branches verbously
+alias gbc="git rev-parse --abbrev-ref HEAD"  # Output current branch name
+alias gbr="git branch -r"  # Without any arg/options, list all remote branches
+alias gbrv="git branch -rv"  # Without any arg/options, list all remote branches verbously
+alias gbv="git branch -v"  # Without any arg/options, list all local branches verbously
+alias gce="git clean"  # Remove untracked files from the working tree
+alias gcfe="git config --global user.email"  # Set $1 as git global email address
+alias gcfg="git config"  # Used to set or get git config
+alias gcfn="git config --global user.name"  # Set $1 as git global name
+alias gcl="git clone"  # Clone a remote repo
+alias gcm="git commit -m"  # Create a commit with a message $1
+alias gco="git checkout"  # Check out to branch $1
+alias gdiff="git diff"  # Show differences between HEAD files and files in CWD; if any arg specified, show only those files
+alias gf="git fetch"  # Update git data from remote (default: origin)
+alias gfom="git fetch origin master"  # Fetch data/files from master (or different the tracked?) branch
+alias gfu="git fetch upstream"  # Update git data from upstream
+alias gl1="git log --pretty=oneline"  # Show git log with full commit hashes and messages
+alias gl1s="git log --pretty=oneline --abbrev-commit"  # Same as `gl1`, only with short hashes
+alias gl="git log"  # Show git log (full commit hashes and messages with author and date)
+alias glg='git log --pretty=format:"%h %s" --graph'  # Same as `gl1s`, but with graphical representation of commit history
+alias gmg="git merge"  # Merge branch $1
+alias gmgs="git merge --squash"  # Merge branch $1 without commit history and without commiting anything
+alias gmv="git mv"  # Move specified files
+alias gph="git push"  # Push committed files/folders to remote (default: origin)
+alias gpl="git pull"  # Pull committed files/folders from remote (default: origin)
+alias gplu="git pull upstream"  # Pull committed files/folders from upstream branch $1
+alias gr="git remote"  # Used to get/set remotes; without any args: list remotes
+alias grau="git remote add upstream"  # Add remote url $1 of the main repo to the fork repo to sync
+alias grm="git rm"  # Remove files (in CWD)
+alias grmr="git reset HEAD --"  # Remove changes from CWD (reset it to HEAD / last commit in the branch)
+alias grms="git rm --cached"  # Remove changes (selected files/folders) from stage
+alias grv="git remote -v"  # List remotes with urls
+alias gs="git status"  # Show staged and non-staged files
 
 # Add an "alert" alias for long running commands. Use like so:
 # sleep 10; alert
