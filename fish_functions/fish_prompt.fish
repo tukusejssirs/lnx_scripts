@@ -14,36 +14,36 @@ function fish_prompt --description 'TS Prompt'
 	set date_format "%l.%M%P"
 	set PS1 $PS1"[$magenta"(date +"$date_format")"$fdefault]"
 
-	# Exit code
-	#if [ "$EXIT" != 0 ]
-	#	set PS1 $PS1"$red$EXIT$fdefault"
-	#else
-	#	set PS1 $PS1"$fdefault$EXIT"
-	##end
+	#Exit code
+	if [ "$EXIT" != 0 ]
+		set PS1 $PS1"$red$EXIT$fdefault"
+	else
+		set PS1 $PS1"$fdefault$EXIT"
+	end
 
-	### Host test
-	#if [ "$prompt_hostname" = remote-host ]  # TODO: If connected to remote host
+	# Host test
+	if [ "$prompt_hostname" = remote-host ]  # TODO: If connected to remote host
 		# Remote host
-	#	set nnnn true
-	#else
+		set nnnn true
+	else
 		# Local host
-	#	set userHost "$lyellow$USER@"(prompt_hostname)":$fdefault"
-	#end
+		set userHost "$lyellow$USER@"(prompt_hostname)":$fdefault"
+	end
 
 	set PS1 $PS1" $userHost$fdefault"
 
 	# Check background and stopped jobs
 	# Background running jobs
-	#set BKGJBS (jobs 2>/dev/null | grep background | wc -l)
-	#if [ $BKGJBS -gt 0 ]
-	#	set PS1 $PS1"$yellow [bg:$BKGJBS]$fdefault"
-	#end
+	set BKGJBS (jobs 2>/dev/null | grep background | wc -l)
+	if [ $BKGJBS -gt 0 ]
+		set PS1 $PS1"$yellow [bg:$BKGJBS]$fdefault"
+	end
 
-	# Stopped running jobs                                                                                       
-	#set STPJBS (jobs 2>/dev/null | grep stopped | wc -l)
-        #if [ $STPJBS -gt 0 ]                                                                                                    
-	#	set PS1 $PS1"$yellow [stp:$STPJBS]$fdefault"
-        #end
+	# Stopped running jobs
+	set STPJBS (jobs 2>/dev/null | grep stopped | wc -l)
+	if [ $STPJBS -gt 0 ]
+		set PS1 $PS1"$yellow [stp:$STPJBS]$fdefault"
+	end
 
 	# Git status
 	#source <(sed -n '/### Add Git Status/,/### End Git Status/p' $prompt_demure | sed '/### [AdEn]\+ Git St$
