@@ -40,6 +40,7 @@ alias gcfn="git config --global user.name"  # Set $1 as git global name
 alias gcl="git clone"  # Clone a remote repo
 alias gcm="git commit -m"  # Create a commit with a message $1
 alias gco="git checkout"  # Check out to branch $1
+alias gco="git checkout master"  # Check out to master branch
 alias gdiff="git diff"  # Show differences between HEAD files and files in CWD; if any arg specified, show only those files
 alias gf="git fetch"  # Update git data from remote (default: origin)
 alias gfom="git fetch origin master"  # Fetch data/files from master (or different the tracked?) branch
