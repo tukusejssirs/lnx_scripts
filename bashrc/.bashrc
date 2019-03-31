@@ -149,6 +149,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/fram.sh
 	src $path_fn/gbd.sh
 	src $path_fn/gbt.sh
+	src $path_fn/gbx.sh
 	src $path_fn/gcb.sh
 	src $path_fn/gls.sh
 	src $path_fn/gmgd.sh
