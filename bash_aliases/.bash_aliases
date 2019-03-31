@@ -91,6 +91,5 @@ done
 
 # ftp
 if [[ -e $HOME/.mm.cz/ftp ]]; then
-	alias mm="lftp -u
-mrtvamanzelkacz,$(<$HOME/.mm.cz/ftp) ftpx.forpsi.com  "
+	alias mm="lftp -u mrtvamanzelkacz,$(<$HOME/.mm.cz/ftp) ftpx.forpsi.com"
 fi
