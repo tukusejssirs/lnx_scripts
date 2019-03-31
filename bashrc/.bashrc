@@ -153,6 +153,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/gls.sh
 	src $path_fn/gmgd.sh
 	src $path_fn/grfx.sh
+	src $path_fn/gump.sh
 	src $path_fn/gup.sh
 	src $path_fn/gups.sh
 	src $path_fn/mkcd.sh
