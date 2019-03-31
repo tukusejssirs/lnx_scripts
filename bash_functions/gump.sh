@@ -15,7 +15,7 @@ function gump(){
 	# Variables
 	branch=$(git rev-parse --abbrev-ref HEAD)
 	main="master"
-	msg=$1
+	msg="$1"
 	script_dir=$(realpath $(dirname $0))
 
 	if [ $(echo $script_dir | grep -o lnx_scripts) ]; then
@@ -27,5 +27,5 @@ function gump(){
 	# Source `gup` function
 	source $lnx_scripts_dir/bash_functions/gup.sh
 
-	gup $msg && git checkout $main && git merge $branch && git branch --delete $branch && git push
+	gup "$msg" && git checkout $main && git merge $branch && git branch --delete $branch && git push
 }
