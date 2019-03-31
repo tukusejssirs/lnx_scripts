@@ -1,6 +1,6 @@
 # This function commits all changes from current directory to $branch (locally and remotely), check outs to master, merges and commits all changes from $branch, deletes the $branch (locally and remotely) and finally pushes all the changes to the remotes.
 
-# Note that this function sources `gup` function, which presumes that you have cloned the repo in `$HOME/git/lnx_scripts` folder.
+# Note that this function sources `gup` and `gbd` functions, which presumes that you have cloned the repo in `$HOME/git/lnx_scripts` folder.
 
 # Also, currently the function presumes that the main branch is called `master`.
 
@@ -24,8 +24,9 @@ function gump(){
 		lnx_scripts_dir="$HOME/git/lnx_scripts"
 	fi
 
-	# Source `gup` function
+	# Source `gup` and `gbd` functions
 	source $lnx_scripts_dir/bash_functions/gup.sh
+	source $lnx_scripts_dir/bash_functions/gbd.sh
 
-	gup "$msg" && git checkout $main && git merge $branch && git branch --delete $branch && git push
+	gup "$msg" && git checkout $main && git merge $branch && gbd $branch && git push
 }
