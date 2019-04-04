@@ -17,6 +17,9 @@
 # git fetch && git pull origin && git pull
 # cd $p
 
+# 'Source' function
+source $HOME/git/lnx_scripts/bash_functions/src.sh
+
 # Check where we are running the shell (Android/Termux, Linux)
 # Then set some system-dependant variables
 if [[ $(uname -o) == "Android" ]]; then
@@ -54,30 +57,10 @@ elif [[ $(uname -o) == "GNU/Linux" ]]; then
 		# sudo umount /mnt/c && sudo mount -t drvfs C: /mnt/c -o metadata  # Remount /mnt/c with linux perms support
 		# cd $cwd  # Enter the home dir when started
 
-		# Functions to run MS Windows apps
 		# TODO:
-		# - create one function for all of these; ideally all from the win path
-		# - make it work with `sudo`
-		# - move them to `bash_functions/` dir and source them in `.bashrc`
-		function indi(){
-			file=$(wslpath -aw $1)
-			/mnt/c/Program\ Files/Adobe/Adobe\ InDesign\ CC\ 2018/InDesign.exe "$file"
-		}
+		# - make $PATH here as it is not set the same way for root user as it is for regular user
 
-		function ff(){
-			file=$(wslpath -aw $1)
-			/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe "$file"
-		}
-
-		function subl(){
-			file=$(wslpath -aw $1)
-			/mnt/c/Program\ Files/Sublime\ Text\ 3/sublime_text.exe "$file"
-		}
-
-		function cmd(){
-			file=$(wslpath -aw $1)
-			/mnt/c/Windows/System32/cmd.exe "$file"
-		}
+		src $path_fn/wsl/win_progs.sh
 	fi
 fi
 
@@ -131,8 +114,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 ### Interactive ### {{{
 if [[ $- == *i* ]]; then
 	path_fn="$HOME/git/lnx_scripts/bash_functions"
-	# 'Source' function
-	source $path_fn/src.sh
 
 	# Bash colours
 	src $path_fn/bash_colours.sh
