@@ -2,12 +2,19 @@
 
 # author:  Tukusej's Sirs
 # date:    4 April 2019
-# version: 1.1
+# version: 1.2
 
 if [ -e /mnt/c/Program\ Files/Adobe/Adobe\ InDesign\ CC\ 2018/InDesign.exe ]; then
-	function indi(){
+	function indesign(){
 		local file=$(wslpath -aw $1)
 		/mnt/c/Program\ Files/Adobe/Adobe\ InDesign\ CC\ 2018/InDesign.exe "$file"
+		alias indi="indesign"
+	}
+fi
+if [ -e /mnt/c/Program\ Files/Adobe/Adobe\ Photoshop\ CC\ 2018/Photoshop.exe ]; then
+	function photoshop(){
+		local file=$(wslpath -aw $1)
+		/mnt/c/Program\ Files/Adobe/Adobe\ Photoshop\ CC\ 2018/Photoshop.exe "$file"
 	}
 fi
 if [ -e /mnt/c/Program\ Files/FileZilla\ FTP\ Client/filezilla.exe ]; then
