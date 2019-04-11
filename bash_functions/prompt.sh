@@ -36,7 +36,7 @@ function prompt(){
 	PS1+="\n"
 
 	## Date
-	PS1+="[${magenta}\D{%l.%M%P}${fdefault}]"
+	PS1+="${fdefault}[${magenta}\D{%l.%M%P}${fdefault}]"
 
 	# Exit code
 	if [ $EXIT != 0 ]; then

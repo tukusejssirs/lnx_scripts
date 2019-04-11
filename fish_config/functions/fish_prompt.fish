@@ -12,7 +12,7 @@ function fish_prompt --description 'TS Prompt'
 
 	## Date
 	set date_format "%l.%M%P"
-	set PS1 $PS1"[$magenta"(date +"$date_format")"$fdefault]"
+	set PS1 $PS1"$fdefault[$magenta"(date +"$date_format")"$fdefault]"
 
 	#Exit code
 	if [ "$EXIT" != 0 ]
