@@ -8,67 +8,67 @@
 # scanimage [grey|colour|lineart] [filename.ext]
 
 # author:  Tukusej's Sirs
-# date:    26 Jan 2019
-# version: 1.0
+# date:    11 April 2019
+# version: 1.2
 
 # TODO:
 # - retVal's are not working yet
 
 #!/bin/bash
 function scan(){
-	retVal=0
+	local retVal=0
 	# Device
-	if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
-		SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
-	fi
-
-	device=$SANE_DEFAULT_DEVICE
+	# if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
+		# SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
+	# fi
+	# local device=$SANE_DEFAULT_DEVICE
+	local device=$(scanimage -f "%d")
 
 	# Options
-	opt="-p --resolution 600"
+	local opt="-p --resolution 600"
 	# File name
-	filename="$2"
+	local filename="$2"
 
 	# Mode
 	case $1 in
 		grey|gray|g|bw)
 			# Grey
-			opt+=" --mode Gray"
+			local opt+=" --mode Gray"
 			;;
 		colour|color|c)
 			# Colour
-			opt+=" --mode Color"
+			local opt+=" --mode Color"
 			;;
 		lineart|l)
 			# Lineart
-			opt+=" --mode Lineart"
+			local opt+=" --mode Lineart"
 			;;
 		*)
 			echo "ERROR: Scanning mode is invalid. Valid modes are grey, colour or lineart."
-			retVal=1
+			local retVal=1
 	esac
 
 	# File format
 	case $2 in
 		*png)
 			# png
-			format="png"
+			local format="png"
 			;;
-		*jpg)
+		*jpg|*jpeg)
 			# jpg
-			format="jpg"
+			local format="jpeg"
 			;;
-		*tif)
+		*tif|tiff)
 			# tif
-			format="tif"
+			local format="tiff"
 			;;
 		*pnm)
 			# pnm
-			format="pnm"
+			local format="pnm"
 			;;
 		*)
 			echo "ERROR: Unknown format. Valid formats are png, jpg, tif, pnm."
-			retVal=2
+			local retVal=2
 	esac
 
 	# Actual command
@@ -77,4 +77,6 @@ function scan(){
 	# else
 	# 	return $retVal
 	# fi
+
+	unset retVal device opt filename format
 }

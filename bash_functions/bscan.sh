@@ -6,32 +6,30 @@
 
 # author:  Tukusej's Sirs
 # date:    11 April 2019
-# version: 1.0
+# version: 1.1
 
 function bscan(){
-	Device
-	if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
-		SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
-	fi
-	device=$SANE_DEFAULT_DEVICE
-
-	filename=$(echo "$1" | grep -Po "^.*(?=\.[a-zA-Z]*$)")
-	colour_mode=$2
-	start=$3
-	end=$4
-	digits=$5
-	format=$(echo "$1" | grep -Po "\.\K[a-zA-z]*$")
+	local filename=$(echo "$1" | grep -Po "^.*(?=\.[a-zA-Z]*$)")
+	local colour_mode=$2
+	local start=$3
+	local end=$4
+	local digits=$5
+	local format=$(echo "$1" | grep -Po "\.\K[a-zA-z]*$")
+	local lnx_scripts="$HOME/git/lnx_scripts"
+	source $lnx_scripts/bash_functions/scan.sh
 
 	for n in $(seq $start $end); do
-		num=$(printf "%0*d\n" $digits $n)
-		ans="r"
+		local num=$(printf "%0*d\n" $digits $n)
+		local ans="r"
+		local temp_name="$num"_"$filename.$format"
 		while [ "$ans" = "R" ] || [ "$ans" = "r" ]; do
 			# scanimage [grey|colour|lineart] [filename.ext]
-			scanimage $colour_mode $num_$filename.$format
-			scanimage -d $device -p --resolution 600 --mode Color --format=png --batch-start > $num_$filename.$format
+			scan $colour_mode "$temp_name"
+			# scanimage -d $device -p --resolution 600 --mode Color --format=png --batch-start > $num_$filename.$format
 			while read ans && [ "$ans" != "R" ] && [ "$ans" != "r" ] && [ "$ans" != "N" ] && [ "$ans" != "n" ]; do
 				echo -n
 			done
 		done
 	done
+	unset filename colour_mode start end digits format lnx_scripts ans num ans temp_name
 }
