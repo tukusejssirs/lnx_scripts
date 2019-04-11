@@ -123,6 +123,7 @@ if [[ $- == *i* ]]; then
 
 	# Bash functions
 	src $path_fn/add_ssh_keys.sh
+	src $path_fn/bscan.sh
 	src $path_fn/cconv.sh
 	src $path_fn/char_multiplier.sh
 	src $path_fn/create_ssh_keys.sh
