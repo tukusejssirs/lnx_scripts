@@ -8,8 +8,8 @@
 # scanimage [grey|colour|lineart] [filename.ext]
 
 # author:  Tukusej's Sirs
-# date:    26 Jan 2019
-# version: 1.0
+# date:    11 April 2019
+# version: 1.1
 
 # TODO:
 # - retVal's are not working yet
@@ -56,7 +56,7 @@ function scan(){
 			;;
 		*jpg)
 			# jpg
-			format="jpg"
+			format="jpeg"
 			;;
 		*tif)
 			# tif
