@@ -139,6 +139,7 @@ if [[ $- == *i* ]]; then
 	src $path_fn/gund.sh
 	src $path_fn/gup.sh
 	src $path_fn/gups.sh
+	src $path_fn/hexcol.sh
 	src $path_fn/mkcd.sh
 	src $path_fn/prompt.sh
 	src $path_fn/prosby.sh
