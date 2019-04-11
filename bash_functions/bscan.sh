@@ -1,36 +1,37 @@
-# Device
-if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
-	SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
-fi
-device=$SANE_DEFAULT_DEVICE
+# This function create a batch scanning from function in `scan.sh` script
 
-filename=$(echo "$1" | grep -Po "^.*(?=\.[a-zA-Z]*$)")
-start=$2
-end=$3
-digits=$4
-format=$(echo "$1" | grep -Po "\.\K[a-zA-z]*$")
+# Usage: $0 [filename].[extension] [colour_mode] [start_number] [end_number] [number_of_digits_in_number]
+# Press N or n to scan next page
+# Press R or r to re-scan current page
 
+# author:  Tukusej's Sirs
+# date:    11 April 2019
+# version: 1.0
 
+function bscan(){
+	Device
+	if [[ $SANE_DEFAULT_DEVICE == "" ]]; then
+		SANE_DEFAULT_DEVICE=$(scanimage -f "%d")
+	fi
+	device=$SANE_DEFAULT_DEVICE
 
-# Option to re-scan [R]
-# Option to scan next [Enter]
+	filename=$(echo "$1" | grep -Po "^.*(?=\.[a-zA-Z]*$)")
+	colour_mode=$2
+	start=$3
+	end=$4
+	digits=$5
+	format=$(echo "$1" | grep -Po "\.\K[a-zA-z]*$")
 
-for n in $(seq $start $end); do
-	num=$(printf "%0*d\n" $digits $n)
-
-	while [ "$ans" != "N" ] && [ "$ans" != "n" ]; do
-		while [ "$ans" != "N" ] && [ "$ans" != "n" ]; do
-			# scanimage -d $device -p --resolution 600 --mode Color --format=png --batch-start > $num_$filename.$format
-			echo $num_$filename.$format
-			read ans
-			case $ans in
-				N|n)  # Next scan
-					echo -n
-				;;
-				*)  # Read $ans again
-					echo -n
-				;;
-			esac
+	for n in $(seq $start $end); do
+		num=$(printf "%0*d\n" $digits $n)
+		ans="r"
+		while [ "$ans" = "R" ] || [ "$ans" = "r" ]; do
+			# scanimage [grey|colour|lineart] [filename.ext]
+			scanimage $colour_mode $num_$filename.$format
+			scanimage -d $device -p --resolution 600 --mode Color --format=png --batch-start > $num_$filename.$format
+			while read ans && [ "$ans" != "R" ] && [ "$ans" != "r" ] && [ "$ans" != "N" ] && [ "$ans" != "n" ]; do
+				echo -n
+			done
 		done
 	done
-done
+}
