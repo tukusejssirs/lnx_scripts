@@ -38,6 +38,8 @@ if [[ $(uname -o) == "Android" ]]; then
 		alias upgrade="apt-get -yq update && apt-get -yq --with-new-pkgs upgrade"
 		alias install="apt-get -yq install"
 		alias ogup="$HOME/git/lnx_scripts/bash_functions/termux/ogup.sh"
+
+		alias smake="make"
 	fi
 elif [[ $(uname -o) == "GNU/Linux" ]]; then
 	# apt aliases
@@ -49,6 +51,8 @@ elif [[ $(uname -o) == "GNU/Linux" ]]; then
 	bin="/bin"
 	var="/var"
 	dev="/dev"
+
+	alias smake="sudo make"
 
 	if [[ $(uname -r | grep -o "Microsoft$") == "Microsoft" ]]; then
 		# Support of Linux permissions in the WSL
