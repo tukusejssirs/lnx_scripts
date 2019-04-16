@@ -73,7 +73,7 @@ function prompt(){
 	source <(sed -n '/### Add Git Status/,/### End Git Status/p' $prompt_demure | sed '/### [AdEn]\+ Git Status ### [{}]\+/d' - | sed 's/"${GChanges}" == "0"/"${GChanges}" != "0"/' - | sed '/local GitColor=\$Gre/,+1 d' - | sed 's/## Check if more than 60 minutes since last/## Check if more than 60 minutes since last run of `${GStatus}`/' - | sed 's/$[{]*Red[}]*/${lred}/g' - | sed 's/$[{]*RCol[}]*/${fdefault}/g' - | sed 's/$[{]*Gre[}]*/${lblue}/g' - | sed 's/$[{]*Pur[}]*/${lmagenta}/g' - | sed 's/$[{]*Yel[}]*/${cyan}/g' -)
 
 	# Current working Directory
-	local cwd=$(realpath $PWD | sed "s|/mnt/c/Users/ts|~|;s|$HOME|~|" -)
+	local cwd=$(realpath "$PWD" | sed "s|/mnt/c/Users/ts|~|;s|$HOME|~|" -)
 
 	PS1+=" $cwd\n\$ "  # Currect working directory, newline and \$
 }
