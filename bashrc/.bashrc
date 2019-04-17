@@ -37,7 +37,7 @@ if [[ $(uname -o) == "Android" ]]; then
 		# apt aliases
 		alias upgrade="apt-get -yq update && apt-get -yq --with-new-pkgs upgrade"
 		alias install="apt-get -yq install"
-		alias ogup="$HOME/git/lnx_scripts/bash_functions/termux/ogup.sh"
+		alias ogus="$HOME/git/lnx_scripts/bash_functions/termux/ogus.sh"
 
 		alias smake="make"
 	fi
