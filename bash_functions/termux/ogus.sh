@@ -60,7 +60,7 @@ if [[ "$su_test" != "/system/build.prop" ]]; then
 	exit 5
 fi
 
-echo -en "${lmagenta}Checking Open GApps configuration and version ...${fdefault}"
+echo -e "${lmagenta}Checking Open GApps configuration and version ...${fdefault}"
 type=$($su_bin cat /system/etc/g.prop | grep ro.addon.type | sed 's/^.*type=\(.*\)$/\1/' -)
 
 if [[ "$type" == "gapps" ]]; then
