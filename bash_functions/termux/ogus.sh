@@ -6,18 +6,37 @@
 # Btw, this is why I named this script as `ogus`: Open Gapps Update Script
 
 # author:  Tukusej's Sirs
-# version: 1.3
-# date:    20 Mar 2019
+# version: 1.4
+# date:    17 April 2019
 
 # dependencies (Android):     termux termux-tasker tasker rooted_android su bash_shell
-# dependencies (Termux/Bash): termux-sudo coreutils grep sed curl jq wget ncurses-utils
+# dependencies (Termux/Bash): termux-sudo coreutils grep sed curl wget ncurses-utils
+
+# exit codes:
+# 0 : Successfull run
+# 1 : Something has happened: current and latest version cannot be compared.\n\ncurrent version = $curVer\nlatest version  = $latVer
+# 2 : This script only updates Open GApps. On current system, the Open GApps are not installed.
+# 3 : Incorrect or negative answer or you did not answer in time.
+# 4 : No root binary is in the $PATH.
+# 5 : Although $su_bin is accessible, you need give root permissions to Tasker, Termux and Termux:Boot.\nIf you use Magisk, you might need to do this to Termux:Boot in Superuser side menu of Magisk.
 
 # TODO:
-# - make it work without termux
-# - create an after-boot-up script that would delete the update.zip
+# - in progress: make it work without termux
+# - workaround (remove before downloading): create an after-boot-up script that would delete the update.zip
+# - done: check if have root; if not, tell user that (1) the device must be rooted; (2) if you use Magisk, you need to enable su access to Termux:Boot
+# - in progress: check if the *zip in dls folder exists; if yes, dl its md5, verify it; if it matches, don't dl it again
+#   - create functions: md5_test, dl_md5, dl_zip, dl_all (to remove duplicate code and make it more versatile)
+#   - remake ogus as function
+#     - make it accept parameters ($path)
+#   - create ogus_run.sh script
+# - done: create a list of exit codes
+# - done: remove jq from dependencies
+# - done: a bit optimised
+# - create help (parameter -h/--help)
 
 # User-dependant variables
 path="/sdcard/dls"  # Location of downloaded files
+mkdir -p $path      # Make sure $path exists
 
 # Colour definitions
 fdefault="\e[39m"  # Default format and colour
@@ -25,48 +44,94 @@ lred="\e[91m"      # Light red
 lmagenta="\e[95m"  # Light magenta
 lyellow="\e[93m"   # Light yellow
 
-echo -e "${lmagenta}Checking Open GApps configuration and version ...${fdefault}"
-type=$(sudo cat /system/etc/g.prop | grep ro.addon.type | sed 's/^.*type=\(.*\)$/\1/' -)
+# Check if we SuperUser permissions
+if [[ $(which sudo &>/dev/null; echo $?) == "0" ]]; then
+	su_bin=$(which sudo)
+elif [[ $(which su  &>/dev/null; echo $?) == "0" ]]; then
+	su_bin=$(which su)
+else
+	echo -e "${lred}ERROR: No root binary is in the $PATH.${fdefault}"
+	exit 4
+fi
+
+su_test=$($su_bin ls /system/build.prop)
+if [[ "$su_test" != "/system/build.prop" ]]; then
+	echo -e "${lred}ERROR: Although $su_bin is accessible, you need give root permissions to Tasker, Termux and Termux:Boot.\nIf you use Magisk, you might need to do this to Termux:Boot in Superuser side menu of Magisk.-${fdefault}"
+	exit 5
+fi
+
+echo -en "${lmagenta}Checking Open GApps configuration and version ...${fdefault}"
+type=$($su_bin cat /system/etc/g.prop | grep ro.addon.type | sed 's/^.*type=\(.*\)$/\1/' -)
 
 if [[ "$type" == "gapps" ]]; then
-	arch=$(sudo cat /system/etc/g.prop | grep arch | sed 's/^.*arch=\(.*\)$/\1/' -)
-	sdk=$(sudo cat /system/etc/g.prop | grep sdk | sed 's/^.*sdk=\(.*\)$/\1/' -)
-	platform=$(sudo cat /system/etc/g.prop | grep platform | sed 's/^.*platform=\(.*\)$/\1/' -)
-	open_type=$(sudo cat /system/etc/g.prop | grep open_type | sed 's/^.*open_type=\(.*\)$/\1/' -)
-	curVer=$(sudo cat /system/etc/g.prop | grep version | sed 's/^.*version=\(.*\)$/\1/' -)
-	latVer=$(curl --silent "https://api.github.com/repos/opengapps/$arch/releases/latest" | jq -r .tag_name)
+	arch=$($su_bin cat /system/etc/g.prop | grep -Po "^.*arch=\K.*$")
+	sdk=$($su_bin cat /system/etc/g.prop | grep -Po "^.*sdk=\K.*$")
+	platform=$($su_bin cat /system/etc/g.prop | grep -Po "^.*platform=\K.*$")
+	open_type=$($su_bin cat /system/etc/g.prop | grep -Po "^.*open_type=\K.*$")
+	curVer=$($su_bin cat /system/etc/g.prop | grep -Po "^.*version=\K.*$")
+	latVer=$(curl -s "https://api.github.com/repos/opengapps/$arch/releases/latest" | grep -Po "^[\t ]*\"tag_name\": \"\K[0-9]*(?=\",$)")
 	zip="open_gapps-$arch-$platform-$open_type-$latVer.zip"
 	url="https://github.com/opengapps/$arch/releases/download/$latVer"
 
 	if [[ $curVer < $latVer ]]; then
-		echo -en "${lmagenta}Found newer version ($latVer).\nDownloading ... ${fdefault}"
-		cd $path
-		rm -rf open_gapps*
-		wget -q --show-progress --progress=bar:force:noscroll $url/$zip{.md5,}  # https://stackoverflow.com/a/52844708/3408342
-		cd $OLDPWD
-		echo -e "${lmagenta}Done.${fdefault}"
-
-		echo -en "${lmagenta}Checking MD5 hashes ... ${fdefault}"
-		cd $path
-		zip_md5=$(md5sum $zip)
-		cd $OLDPATH
-		md5_md5=$(cat $path/$zip.md5)
-		if [[ "$zip_md5" == "$md5_md5" ]]; then
-			echo -e "${lmagenta}Done.${fdefault}"
+		echo -e "${lmagenta}Found newer version ($latVer).${fdefault}"
+		if [[ -e $path/$zip ]]; then
+			echo -e "${lmagenta}Found the file already downloaded.${fdefault}"
+                	echo -en "${lmagenta}Checking MD5 hashes ... ${fdefault}"
+			cd $path
+			rm open_gapps*md5
+                	wget -q --show-progress --progress=bar:force:noscroll $url/$zip.md5  # https://stackoverflow.com/a/52844708>
+                	zip_md5=$(md5sum $zip)
+                	cd $OLDPATH
+                	md5_md5=$(cat $path/$zip.md5)
+                	if [[ "$zip_md5" == "$md5_md5" ]]; then
+                	        echo -e "${lmagenta}Done.${fdefault}"
+                	else
+                	        echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
+                	        read -t 5 ans
+                	        case $ans in
+                	                y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
+                	                *) exit 3 ;;
+                	        esac
+                	fi
+			echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
+                        $su_bin bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
+			$su_bin reboot recovery
 		else
-			echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
-			read -t 5 ans
-			case $ans in
-				y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
-				*) exit 3 ;;
-			esac
-		fi
+			echo -en "${lmagenta}Downloading ... ${fdefault}"
+			cd $path
+			rm -rf open_gapps*
+			wget -q --show-progress --progress=bar:force:noscroll $url/$zip{.md5,}  # https://stackoverflow.com/a/52844708/3408342
+			cd $OLDPWD
+			echo -e "${lmagenta}Done.${fdefault}"
 
-		echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
-		sudo bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
-		sudo reboot recovery
+			echo -en "${lmagenta}Checking MD5 hashes ... ${fdefault}"
+			cd $path
+			zip_md5=$(md5sum $zip)
+			cd $OLDPATH
+			md5_md5=$(cat $path/$zip.md5)
+			if [[ "$zip_md5" == "$md5_md5" ]]; then
+				echo -e "${lmagenta}Done.${fdefault}"
+			else
+				echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
+				read -t 5 ans
+				case $ans in
+					y|Y|yes|Yes|YES)
+						echo -e "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}"
+					;;
+					*)
+						echo -e "${lred}Incorrect or negative answer or you did not answer in time.${fdefault}"
+						exit 3
+					;;
+				esac
+			fi
+
+			echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
+			$su_bin bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
+			$su_bin reboot recovery
+		fi
 	elif [[ $curVer == $latVer ]]; then
-		echo -e "${lmagenta}Open GApps version $latVer is already the latest version, no need to update it.${fdefault}"
+		echo -e "${lmagenta}Open GApps version ${lyellow}$latVer${lmagenta} is already the latest version, no need to update it.${fdefault}"
 	else
 		echo -e "${lred}ERROR: Something has happened: current and latest version cannot be compared.\n\ncurrent version = $curVer\nlatest version  = $latVer${fdefault}"
 		exit 1
