@@ -6,8 +6,8 @@
 # Btw, this is why I named this script as `ogus`: Open Gapps Update Script
 
 # author:  Tukusej's Sirs
-# version: 1.4
-# date:    17 April 2019
+# version: 1.5
+# date:    19 April 2019
 
 # dependencies (Android):     termux termux-tasker tasker rooted_android su bash_shell
 # dependencies (Termux/Bash): termux-sudo coreutils grep sed curl wget ncurses-utils
@@ -23,15 +23,11 @@
 # TODO:
 # - in progress: make it work without termux
 # - workaround (remove before downloading): create an after-boot-up script that would delete the update.zip
-# - done: check if have root; if not, tell user that (1) the device must be rooted; (2) if you use Magisk, you need to enable su access to Termux:Boot
 # - in progress: check if the *zip in dls folder exists; if yes, dl its md5, verify it; if it matches, don't dl it again
 #   - create functions: md5_test, dl_md5, dl_zip, dl_all (to remove duplicate code and make it more versatile)
 #   - remake ogus as function
-#     - make it accept parameters ($path)
+#     - make it accept parameters ($path; no_reboot; dl_only))
 #   - create ogus_run.sh script
-# - done: create a list of exit codes
-# - done: remove jq from dependencies
-# - done: a bit optimised
 # - create help (parameter -h/--help)
 
 # User-dependant variables
@@ -87,16 +83,38 @@ if [[ "$type" == "gapps" ]]; then
                 	if [[ "$zip_md5" == "$md5_md5" ]]; then
                 	        echo -e "${lmagenta}Done.${fdefault}"
                 	else
-                	        echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
-                	        read -t 5 ans
-                	        case $ans in
-                	                y|Y|yes|Yes|YES) "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}" ;;
-                	                *) exit 3 ;;
-                	        esac
+                	        echo -e "${lyellow}\nWARNING: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
+				echo -en "${lmagenta}Downloading $zip ... ${fdefault}"
+	                        cd $path
+        	                rm -rf open_gapps*zip
+                	        wget -q --show-progress --progress=bar:force:noscroll $url/$zip  # https://stackoverflo>                        cd $OLDPWD
+                        	echo -e "${lmagenta}Done.${fdefault}"
+				echo -en "${lmagenta}Checking MD5 hashes again ... ${fdefault}"
+				cd $path
+	                        zip_md5=$(md5sum $zip)
+                                cd $OLDPATH
+                                md5_md5=$(cat $path/$zip.md5)
+                                if [[ "$zip_md5" == "$md5_md5" ]]; then
+	                                echo -e "${lmagenta}Done.${fdefault}"
+	                        else
+	                        	echo -e "${lred}\nERROR: MD5 hashes does not match, see bellow.\n\nzip: $zip_md5\nmd5: $md5_md5\n\nDo you want to continue? You have 5 seconds to answer (*no | yes):${fdefault}"
+	                        	read -t 5 ans
+       	                                case $ans in
+	                                        y|Y|yes|Yes|YES)
+        		                                echo -e "${lyellow}WARNING: Ignoring MD5 mismatch.${fdefault}"
+                                                ;;
+                                                *)
+                                                	echo -e "${lred}Incorrect or negative answer or you did not answer in time.${fdefault}"
+                                                        exit 3
+						;;
+                                        esac
+                                fi
+	                        	                                                                                                                                                                                                                                                                                                                fi
                 	fi
 			echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
                         $su_bin bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
-			$su_bin reboot recovery
+#			$su_bin reboot recovery
+			exit 0
 		else
 			echo -en "${lmagenta}Downloading ... ${fdefault}"
 			cd $path
@@ -128,7 +146,8 @@ if [[ "$type" == "gapps" ]]; then
 
 			echo -e "${lmagenta}Creating Open Recovery Script and rebooting ...${fdefault}"
 			$su_bin bash -c "echo -e 'install $path/$zip\nreboot' > /cache/recovery/openrecoveryscript"
-			$su_bin reboot recovery
+#			$su_bin reboot recovery
+			exit 0
 		fi
 	elif [[ $curVer == $latVer ]]; then
 		echo -e "${lmagenta}Open GApps version ${lyellow}$latVer${lmagenta} is already the latest version, no need to update it.${fdefault}"
